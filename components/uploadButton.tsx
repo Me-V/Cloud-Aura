@@ -33,7 +33,7 @@ const UploadButton = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [fileName, setFileName] = useState('');
-    const [fileType, setFileType] = useState('');
+    // const [fileType, setFileType] = useState('');
     const [error, setError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -77,7 +77,7 @@ const UploadButton = () => {
             onClose();
             setIsLoading(false);
             setFileName('');
-            setFileType('');
+            // setFileType('');
             setError(null);
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
@@ -132,7 +132,7 @@ const UploadButton = () => {
                                     const file = e.target.files?.[0];
                                     if (file) {
                                         setFileName(file.name);
-                                        setFileType(file.type);
+                                        // setFileType(file.type);
                                     }
                                     validateForm();
                                 }}

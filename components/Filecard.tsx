@@ -29,10 +29,10 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
         orgId = organization.organization?.id ?? user.user?.id;
     }
 
-    const handleView = (fileId: string) => {
+    // const handleView = (fileId: string) => {
 
-        //todo
-    }
+    //     //todo
+    // }
 
     const letsToast = () => {
         toast({
