@@ -86,7 +86,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                 </CardBody>
                 <CardFooter>
                     <ButtonGroup spacing='2'>
-                        <Button variant='solid' colorScheme='blue' onClick={() => handleView(file._id)}>
+                        <Button variant='solid' colorScheme='blue'>
                             View
                         </Button>
                         <Button
