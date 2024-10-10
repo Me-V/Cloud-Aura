@@ -4,24 +4,34 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Button,
+  IconButton,
+  Button
 } from '@chakra-ui/react';
+import { HiDotsVertical } from 'react-icons/hi';
 
 const Header = () => {
   return (
     <div className="flex justify-between items-center p-4">
       {/* Left Side: Smaller Action Button */}
       <Menu>
-        <MenuButton as={Button} size="sm" colorScheme="blue" variant="solid">
-          Actions
-        </MenuButton>
+        <MenuButton
+          as={IconButton}
+          aria-label="Options"
+          icon={<HiDotsVertical size={24} />} // Increased icon size
+          variant="unstyled"
+          color="white"
+          size="md"
+          _hover={{}}
+          _active={{}}
+          style={{ cursor: 'pointer' }}
+        />
         <MenuList>
           <MenuItem>All Files</MenuItem>
           <MenuItem>Trash</MenuItem>
           <MenuItem>Favourites</MenuItem>
         </MenuList>
       </Menu>
-
+      
       {/* Right Side: Organization and User Buttons */}
       <div className="flex items-center space-x-2">
         <OrganizationSwitcher />

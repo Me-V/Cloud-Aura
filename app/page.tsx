@@ -1,15 +1,14 @@
 'use client';
-import { Button, Card, CardBody, CardFooter, Image, ButtonGroup } from "@chakra-ui/react";
 import { useOrganization, useUser } from "@clerk/nextjs";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-
+import UploadButton from "@/components/uploadButton";
+import Filecard from "@/components/Filecard"
+import Image from "next/image";
 
 export default function Home() {
   const user = useUser();
   const organization = useOrganization();
-  const createFiles = useMutation(api.files.createFile);
-
   let orgId: string | undefined = undefined;
 
   if (organization.isLoaded && user.isLoaded) {
@@ -20,38 +19,27 @@ export default function Home() {
 
   return (
     <>
-      <div className="h-[100vh] bg-black flex flex-col p-10">
+      <div className="min-h-screen bg-black flex flex-col p-10">
         <div className="flex justify-between items-center pb-5">
           <h1 className="text-white text-5xl">Your Files</h1>
-          <Button 
-            onClick={() => {
-              if (!orgId) return;  
-              createFiles({ name: "hello world", orgId });
-            }} 
-            colorScheme="blue"
-            variant="solid"
-          >
-            Upload
-          </Button>
+          <UploadButton />
         </div>
 
-        <Card maxW='sm'>
-          <CardBody>
-            <Image
-              src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-              alt='Green double couch with wooden legs'
-              borderRadius='lg'
-            />
-          </CardBody>
-          <CardFooter>
-            <ButtonGroup spacing='2'>
-              <Button variant='solid' colorScheme='blue'>
-                View
-              </Button>
-            </ButtonGroup>
-          </CardFooter>
-        </Card>
-        
+        {allFiles && allFiles.length > 0 && (
+          <div className="grid grid-cols-3 gap-4 mt-5">
+            {allFiles.map((file) => (
+              <Filecard key={file._id} file={file}/>
+            ))}
+          </div>
+        )}
+
+        {/* if no files show this */}
+        {allFiles && allFiles.length === 0 && (
+          <div className="flex flex-col justify-center items-center h-[70vh]">
+             <Image src="/noFiles.svg" alt="No files" width={500} height={500} />
+            <p className="text-white text-2xl font-bold text-center mt-10 ">No files found</p>
+          </div>
+        )}
       </div>
     </>
   );
