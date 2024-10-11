@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { ChakraProvider } from '@chakra-ui/react'
-import Header from "@/components/Header";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -32,7 +31,6 @@ export default function RootLayout({
       >
         <ChakraProvider>
         <ConvexClientProvider>
-          <div className="bg-black"><Header /></div>
           {children}
         </ConvexClientProvider>
         </ChakraProvider>
