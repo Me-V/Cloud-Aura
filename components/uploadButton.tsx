@@ -121,7 +121,7 @@ const UploadButton = () => {
                                 type="file"
                                 ref={fileInputRef}
                                 onChange={(e) => {
-                                    const file = e.target.files?.[0];
+                                    // const file = e.target.files?.[0];
                                     // if (file) {
                                     //     setFileName(file.name);
                                     //     // setFileType(file.type);
