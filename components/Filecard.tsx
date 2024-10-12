@@ -1,6 +1,6 @@
 'use client';
 import {
-    Button, Card, CardBody, CardFooter, Image, ButtonGroup, Modal,
+    Button, Card, CardBody, Image, ButtonGroup, Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Box, Flex
+    Box
 } from "@chakra-ui/react";
 import { useOrganization, useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
