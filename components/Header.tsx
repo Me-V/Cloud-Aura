@@ -5,49 +5,55 @@ import {
   MenuList,
   MenuItem,
   IconButton,
-  Button
+  Button,
+  Box,
+  Flex
 } from '@chakra-ui/react';
 import { HiDotsVertical } from 'react-icons/hi';
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center p-4">
+    <Flex as="header" justify="space-between" align="center" p={2} maxWidth="100%" overflow="hidden">
       {/* Left Side: Smaller Action Button */}
-      <Menu>
-        <MenuButton
-          as={IconButton}
-          aria-label="Options"
-          icon={<HiDotsVertical size={24} />} // Increased icon size
-          variant="unstyled"
-          color="white"
-          size="md"
-          _hover={{}}
-          _active={{}}
-          style={{ cursor: 'pointer' }}
-        />
-        <MenuList>
-          <MenuItem>All Files</MenuItem>
-          <MenuItem>Trash</MenuItem>
-          <MenuItem>Favourites</MenuItem>
-        </MenuList>
-      </Menu>
+      <Box>
+        <Menu>
+          <MenuButton
+            as={IconButton}
+            aria-label="Options"
+            icon={<HiDotsVertical size={20} />}
+            variant="unstyled"
+            color="white"
+            size="sm"
+            _hover={{}}
+            _active={{}}
+            style={{ cursor: 'pointer' }}
+          />
+          <MenuList>
+            <MenuItem>All Files</MenuItem>
+            <MenuItem>Trash</MenuItem>
+            <MenuItem>Favourites</MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
       
       {/* Right Side: Organization and User Buttons */}
-      <div className="flex items-center space-x-2">
-        <OrganizationSwitcher />
+      <Flex align="center" flexShrink={0}>
+        <Box mr={2}>
+          <OrganizationSwitcher />
+        </Box>
         <SignedOut>
           <SignInButton>
-            <Button size="sm" colorScheme="blue" variant="solid" className="mr-2">Sign In</Button>
+            <Button size="sm" colorScheme="blue" variant="solid">Sign In</Button>
           </SignInButton>
         </SignedOut>
         <SignedIn>
           <SignOutButton>
-            <Button size="sm" colorScheme="red" variant="outline">Sign Out</Button>
+            <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>
           </SignOutButton>
-          <UserButton />
+          <UserButton/>
         </SignedIn>
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }
 

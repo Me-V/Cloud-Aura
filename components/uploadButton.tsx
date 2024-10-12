@@ -17,6 +17,7 @@ import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useOrganization, useUser } from '@clerk/nextjs';
 import { useToast } from '@chakra-ui/react'
+import { FileType } from '@/convex/schema';
 
 
 const UploadButton = () => {
@@ -69,11 +70,12 @@ const UploadButton = () => {
             headers: { "Content-Type": fileInputRef.current!.files![0].type },
             body: fileInputRef.current!.files![0],
         });
-        
-        const { storageId } = await result.json(); 
 
-        if(result.ok) {
-            await createFiles({ name: fileName, orgId, fileId: storageId });
+        const { storageId } = await result.json();
+
+        if (result.ok) {
+
+            await createFiles({ name: fileName, orgId, fileId: storageId, type: fileInputRef.current!.files![0].type as FileType });
             onClose();
             setIsLoading(false);
             setFileName('');
@@ -88,7 +90,7 @@ const UploadButton = () => {
                 status: "success",
                 duration: 2000,
                 isClosable: true,
-                position:"bottom-right"
+                position: "bottom-right"
             });
         } else {
             setError("Failed to upload file");
@@ -97,7 +99,7 @@ const UploadButton = () => {
                 status: "error",
                 duration: 2000,
                 isClosable: true,
-                position:"bottom-right"
+                position: "bottom-right"
             });
         }
     };
@@ -112,17 +114,7 @@ const UploadButton = () => {
                     <ModalHeader>Upload File</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <FormControl isRequired isInvalid={!!error}>
-                            <FormLabel>File Name</FormLabel>
-                            <Input
-                                value={fileName}
-                                onChange={(e) => {
-                                    setFileName(e.target.value);
-                                    validateForm();
-                                }}
-                                placeholder="Enter file name"
-                            />
-                        </FormControl>
+
                         <FormControl mt={4} isRequired isInvalid={!!error}>
                             <FormLabel>Select File</FormLabel>
                             <Input
@@ -138,6 +130,18 @@ const UploadButton = () => {
                                 }}
                             />
                         </FormControl>
+
+                        <FormControl isRequired isInvalid={!!error}>
+                            <FormLabel>File Name</FormLabel>
+                            <Input
+                                value={fileName}
+                                onChange={(e) => {
+                                    setFileName(e.target.value);
+                                    validateForm();
+                                }}
+                                placeholder="Enter file name"
+                            />
+                        </FormControl>
                         {error && (
                             <Text color="red.500" mt={2}>
                                 {error}
@@ -146,11 +150,11 @@ const UploadButton = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button 
-                            colorScheme="blue" 
-                            mr={3} 
-                            onClick={handleSubmit} 
-                            isLoading={isLoading} 
+                        <Button
+                            colorScheme="blue"
+                            mr={3}
+                            onClick={handleSubmit}
+                            isLoading={isLoading}
                             disabled={isLoading || !isFormValid}
                         >
                             Submit

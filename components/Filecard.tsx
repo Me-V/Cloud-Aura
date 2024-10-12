@@ -8,9 +8,10 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
+    Box, Flex
 } from "@chakra-ui/react";
 import { useOrganization, useUser } from "@clerk/nextjs";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
@@ -28,7 +29,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
     if (organization.isLoaded && user.isLoaded) {
         orgId = organization.organization?.id ?? user.user?.id;
     }
-
+   
     // const handleView = (fileId: string) => {
 
     //     //todo
@@ -43,6 +44,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
             position: "bottom-right"
         });
     }
+    
 
     return (
         <>
@@ -75,32 +77,37 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                 </ModalContent>
             </Modal>
 
-            <Card key={file._id} maxW='sm'>
-                <CardBody>
-                    <Image
-                        src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                        alt={file.name}
-                        borderRadius='lg'
-                    />
-                    <p>{file.name}</p>
-                </CardBody>
-                <CardFooter>
-                    <ButtonGroup spacing='2'>
-                        <Button variant='solid' colorScheme='blue'>
-                            View
-                        </Button>
-                        <Button
-                            variant='solid'
-                            colorScheme='red'
-                            onClick={() => onOpen()}
-                            isLoading={isLoading}
-                            disabled={isLoading}
-                        >
-                            Delete
-                        </Button>
-                    </ButtonGroup>
-                </CardFooter>
-            </Card>
+            <Box width={["100%", "50%", "33%", "25%"]} p={2}>
+                <Card key={file._id} className="ml-3 h-[50vh] w-[80vw] sm:h-[50vh] sm:w-[25vw]">
+                    <CardBody>
+                        <Flex direction="column" align="center" justify="center" height="100%">
+                            {file.type === "application/pdf" && <Image src="/file-text.svg" boxSize={["100px", "150px"]} alt={file.name} borderRadius='lg' />}
+                            {file.type === "image/jpeg" && <Image src="" alt={file.name} borderRadius='lg' objectFit="cover" boxSize={["100px", "150px"]} />}
+                            {file.type === "text/csv" && <Image src="/csv.png" alt={file.name} borderRadius='lg' boxSize={["100px", "150px"]} />}
+                            <Box mt={4} textAlign="center">
+                                <p className="font-bold text-lg">{file.name}</p>
+                            </Box>
+                        </Flex>
+                    </CardBody>
+                    <CardFooter>
+                        <ButtonGroup spacing='3' width="100%" justifyContent="center">
+                            <Button variant='solid' colorScheme='blue' size={["sm", "md"]}>
+                                View
+                            </Button>
+                            <Button
+                                variant='solid'
+                                colorScheme='red'
+                                onClick={() => onOpen()}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                                size={["sm", "md"]}
+                            >
+                                Delete
+                            </Button>
+                        </ButtonGroup>
+                    </CardFooter>
+                </Card>
+            </Box>
         </>
     );
 }
