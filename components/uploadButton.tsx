@@ -41,7 +41,14 @@ const UploadButton = () => {
     const [isFormValid, setIsFormValid] = useState(false);
 
     const onOpen = () => setIsOpen(true);
-    const onClose = () => setIsOpen(false);
+    const onClose = () => {
+        setIsOpen(false);
+        setFileName('');
+        setError(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
 
     const validateForm = () => {
         const isValid = fileName.trim() !== '' && fileInputRef.current?.files?.[0] !== undefined;
@@ -121,12 +128,12 @@ const UploadButton = () => {
                                 type="file"
                                 ref={fileInputRef}
                                 onChange={(e) => {
-                                    // const file = e.target.files?.[0];
-                                    // if (file) {
-                                    //     setFileName(file.name);
-                                    //     // setFileType(file.type);
-                                    // }
-                                    validateForm();
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                        // setFileName(file.name);
+                                        // setFileType(file.type);
+                                        validateForm();
+                                    } 
                                 }}
                             />
                         </FormControl>
