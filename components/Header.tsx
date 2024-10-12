@@ -13,14 +13,14 @@ import { HiDotsVertical } from 'react-icons/hi';
 
 const Header = () => {
   return (
-    <Flex as="header" justify="space-between" align="center" p={2} maxWidth="100%" overflow="hidden">
+    <Flex as="header" justify="space-between" bg="black" align="center" p={2} maxHeight={80}  maxWidth="100%" overflow="hidden">
       {/* Left Side: Smaller Action Button */}
       <Box>
         <Menu>
           <MenuButton
             as={IconButton}
             aria-label="Options"
-            icon={<HiDotsVertical size={20} />}
+            icon={<HiDotsVertical size={30} />}
             variant="unstyled"
             color="white"
             size="sm"

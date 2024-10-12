@@ -122,10 +122,10 @@ const UploadButton = () => {
                                 ref={fileInputRef}
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if (file) {
-                                        setFileName(file.name);
-                                        // setFileType(file.type);
-                                    }
+                                    // if (file) {
+                                    //     setFileName(file.name);
+                                    //     // setFileType(file.type);
+                                    // }
                                     validateForm();
                                 }}
                             />

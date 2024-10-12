@@ -2,6 +2,7 @@ import { ConvexError, v } from "convex/values"
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server"
 // import { Organization } from "@clerk/nextjs/server";
 import { getUser } from "./users";
+import { Id } from "./_generated/dataModel";
 
 export const generateUploadUrl = mutation(async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -78,3 +79,14 @@ export const deleteFile = mutation({
     }
 });
  
+export const list = query({
+    args: {fileId: v.id("_storage")},
+    handler: async (ctx, args) => {
+      
+        // a query to find the file with the given fileId
+        const file = await ctx.db.query("files").withIndex("by_fileId", (q)=> q.eq("fileId", args.fileId )).first();
+        if(!file) throw new ConvexError("File not found");
+
+        return await ctx.storage.getUrl(file?.fileId as Id<"_storage">);
+    },
+});

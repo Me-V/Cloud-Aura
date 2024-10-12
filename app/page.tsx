@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="sticky top-0 z-50 h-16 pt-3"><Header /></div>
+      <div className="sticky top-0 z-50 h-16"><Header /></div>
       
       <main className="flex flex-col px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-10 max-w-full overflow-x-hidden">
         <div className="flex flex-row sm:flex-row justify-between items-center pb-5 gap-4">
