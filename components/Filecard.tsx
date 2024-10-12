@@ -11,7 +11,7 @@ import {
     Box, Flex
 } from "@chakra-ui/react";
 import { useOrganization, useUser } from "@clerk/nextjs";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { useToast } from '@chakra-ui/react'

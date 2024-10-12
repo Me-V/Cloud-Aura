@@ -31,7 +31,10 @@ export default function Home() {
     );
   }
   
-  
+  //show a loader until allFiles is loaded
+  if (!allFiles) {
+    return <Loader />;
+  } 
 
   return (
     <div className="min-h-screen bg-black">
