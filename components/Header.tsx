@@ -13,7 +13,7 @@ import { HiDotsVertical } from 'react-icons/hi';
 
 const Header = () => {
   return (
-    <Flex as="header" justify="space-between" bg="black" align="center" p={2} maxHeight={80}  maxWidth="100%" overflow="hidden">
+    <Flex as="header" justify="space-between" bg="black" align="center" p={2} maxHeight={80} maxWidth="100%" overflow="hidden">
       {/* Left Side: Smaller Action Button */}
       <Box>
         <Menu>
@@ -32,10 +32,13 @@ const Header = () => {
             <MenuItem>All Files</MenuItem>
             <MenuItem>Trash</MenuItem>
             <MenuItem>Favourites</MenuItem>
+            <MenuItem><SignOutButton>
+              <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>
+            </SignOutButton></MenuItem>
           </MenuList>
         </Menu>
       </Box>
-      
+
       {/* Right Side: Organization and User Buttons */}
       <Flex align="center" flexShrink={0}>
         <Box mr={2}>
@@ -47,10 +50,8 @@ const Header = () => {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-          <SignOutButton>
-            <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>
-          </SignOutButton>
-          <UserButton/>
+
+          <UserButton />
         </SignedIn>
       </Flex>
     </Flex>
