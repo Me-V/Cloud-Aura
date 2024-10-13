@@ -1,6 +1,6 @@
 'use client';
 import {
-    Button, Card, CardBody, Image, ButtonGroup, Modal,
+    Button, Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
@@ -8,7 +8,6 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Box
 } from "@chakra-ui/react";
 import { useOrganization, useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
@@ -16,6 +15,7 @@ import { api } from "@/convex/_generated/api";
 import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
 import { Doc, Id } from "@/convex/_generated/dataModel";
+import Image from 'next/image';
 
 export default function Filecard({ file }: { file: Doc<"files"> }) {
     const user = useUser();
@@ -31,11 +31,6 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
         orgId = organization.organization?.id ?? user.user?.id;
     }
 
-    // const handleView = (fileId: string) => {
-
-    //     //todo
-    // }
-
     const letsToast = () => {
         toast({
             title: "File deleted successfully",
@@ -44,8 +39,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
             isClosable: true,
             position: "bottom-right"
         });
-    }
-
+    };
 
     return (
         <>
@@ -78,70 +72,56 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                 </ModalContent>
             </Modal>
 
-            <Box width={["100%", "50%", "33%", "25%"]} p={2}>
-                <Card key={file._id} className="ml-3 h-[40vh] sm:h-[50vh] w-[80vw] sm:w-[25vw]">
-                    <CardBody>
-                        <div className="mt-4">
-                            {file.type === "application/pdf" && (
-                                <Image 
-                                    src="/file-text.svg" 
-                                    height={[130, 150, 150]}
-                                    width={["80%", "90%", 280]}
-                                    alt={file.name} 
-                                    borderRadius='lg'
-                                    mx="auto"
-                                    display="block"
-                                />
-                            )}
-                            {file.type === "image/jpeg" && (
-                                <Image 
-                                    src={getFileUrl ?? ''} 
-                                    height={[130, 150, 200]}
-                                    width={["80%", "90%", 280]}
-                                    alt={file.name} 
-                                    borderRadius='lg' 
-                                    objectFit="cover" 
-                                    mx="auto"
-                                    display="block"
-                                />
-                            )}
-                            {file.type === "text/csv" && (
-                                <Image 
-                                    src="/csv.png" 
-                                    alt={file.name} 
-                                    borderRadius='lg' 
-                                    boxSize={["80px", "100px", "150px"]}
-                                    mx="auto"
-                                    display="block"
-                                />
-                            )}
-                        </div>
-                        <div className="mt-4">
-                            {file.type === "image/jpeg" ? 
-                                <p className="font-bold text-xl sm:text-2xl">{file.name}</p> : 
-                                <p className="font-bold text-2xl sm:text-3xl mt-4 sm:mt-10">{file.name.split(".")[0]}</p>
-                            }
-                        </div>
-                    </CardBody>
-                    
-                        <ButtonGroup marginLeft={5} marginBottom={6} spacing='3' width="100%" justifyContent="">
-                            <Button variant='solid' colorScheme='blue' size={["sm", "md"]}>
-                                View
-                            </Button>
-                            <Button
-                                variant='solid'
-                                colorScheme='red'
-                                onClick={() => onOpen()}
-                                isLoading={isLoading}
-                                disabled={isLoading}
-                                size={["sm", "md"]}
-                            >
-                                Delete
-                            </Button>
-                        </ButtonGroup>
-                    
-                </Card>
-            </Box>
+            <div className="h-auto w-full max-w-sm mx-auto border rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                <div className="relative h-48 bg-gray-100">
+                    {file.type === "application/pdf" && (
+                        <Image 
+                            src="/file-text.svg" 
+                            layout="fill"
+                            objectFit="contain"
+                            alt={file.name} 
+                            className="p-4"
+                        />
+                    )}
+                    {file.type === "image/jpeg" && (
+                        <Image 
+                            src={getFileUrl ?? ''} 
+                            layout="fill"
+                            objectFit="cover"
+                            alt={file.name} 
+                            className="rounded-t-lg"
+                        />
+                    )}
+                    {file.type === "text/csv" && (
+                        <Image 
+                            src="/csv.png" 
+                            layout="fill"
+                            objectFit="contain"
+                            alt={file.name} 
+                            className="p-4"
+                        />
+                    )}
+                </div>
+                <div className="p-4">
+                    <h2 className="font-bold text-xl truncate">{file.name}</h2>
+                    {/* <p className="text-sm text-gray-600 mt-1">{file.type}</p> */}
+                    <div className="mt-4 flex justify-between items-center">
+                        {/* <span className="text-sm text-gray-500">
+                            {new Date(file._creationTime).toLocaleDateString()}
+                        </span> */}
+                        <Button
+                            colorScheme="red"
+                            size="sm"
+                            onClick={() => {
+                                onOpen(); // Open the confirmation modal
+                            }}
+                            isLoading={isLoading}
+                        >
+                            Delete
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }

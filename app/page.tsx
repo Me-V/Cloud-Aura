@@ -42,7 +42,7 @@ export default function Home() {
       
       <main className="flex flex-col px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-10 max-w-full overflow-x-hidden">
         <div className="flex flex-row sm:flex-row justify-between items-center pb-5 gap-4">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">Your Files
+          <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">Your Files
           </h1>
           <UploadButton />
         </div>
