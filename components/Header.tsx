@@ -42,7 +42,7 @@ const Header = () => {
       {/* Right Side: Organization and User Buttons */}
       <Flex align="center" flexShrink={0}>
         <Box mr={2}>
-          <OrganizationSwitcher />
+          <div className="bg-white rounded-md mr-3 p-2"><OrganizationSwitcher/></div>
         </Box>
         <SignedOut>
           <SignInButton>
@@ -50,8 +50,14 @@ const Header = () => {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-
-          <UserButton />
+          <UserButton appearance={{
+              elements: {
+                avatarBox: {
+                  width: '40px',
+                  height: '40px'
+                }
+              }
+            }} />
         </SignedIn>
       </Flex>
     </Flex>
