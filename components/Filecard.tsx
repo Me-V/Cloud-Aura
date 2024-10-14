@@ -16,7 +16,6 @@ import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import Image from 'next/image';
-import Loader from "./Loader";
 
 
 export default function Filecard({ file }: { file: Doc<"files"> }) {
