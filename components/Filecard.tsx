@@ -16,8 +16,11 @@ import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import Image from 'next/image';
+import Loader from "./Loader";
+
 
 export default function Filecard({ file }: { file: Doc<"files"> }) {
+
     const user = useUser();
     const organization = useOrganization();
     const deleteFiles = useMutation(api.files.deleteFile);
@@ -26,6 +29,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
     const toast = useToast();
     const [isLoading, setIsLoading] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isImageModalOpen, onOpen: openImageModal, onClose: closeImageModal } = useDisclosure();
 
     if (organization.isLoaded && user.isLoaded) {
         orgId = organization.organization?.id ?? user.user?.id;
@@ -43,6 +47,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
 
     return (
         <>
+            {/* Confirmation Modal for Deleting Files */}
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -72,6 +77,35 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                 </ModalContent>
             </Modal>
 
+            {/* Image Preview Modal */}
+            <Modal isOpen={isImageModalOpen} onClose={closeImageModal} isCentered>
+                <ModalOverlay />
+                <ModalContent mx="4" bg="black" color="white" borderRadius="lg" border="3px solid white" maxH={["80vh", "90vh", "auto"]}>
+                    <ModalHeader className="text-4xl font-extrabold">{file.name}</ModalHeader>
+                    
+                    <ModalCloseButton 
+                        _hover={{ 
+                            color: 'white',
+                            transform: 'scale(1.2)',
+                            transition: 'transform 0.2s',
+                            backgroundColor: 'red.500'
+                        }} 
+                    /> 
+                    <ModalBody>
+                            <div className="flex justify-center pb-5">
+                                <Image 
+                                    src={getFileUrl ?? ''} 
+                                    width={250}
+                                    height={250}
+                                    alt={file.name} 
+                                    className="rounded-lg"
+                                    style={{ maxHeight: '60vh', width: 'auto' }}
+                                />
+                            </div>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
             <div className="h-auto w-full max-w-sm mx-auto border rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
                 <div className="relative h-48 bg-gray-100">
                     {file.type === "application/pdf" && (
@@ -89,7 +123,8 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                             layout="fill"
                             objectFit="cover"
                             alt={file.name} 
-                            className="rounded-t-lg"
+                            className="rounded-t-lg cursor-pointer"
+                            onClick={openImageModal} // Open image modal when clicked
                         />
                     )}
                     {file.type === "text/csv" && (
@@ -104,17 +139,11 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                 </div>
                 <div className="p-4">
                     <h2 className="font-bold text-xl truncate">{file.name}</h2>
-                    {/* <p className="text-sm text-gray-600 mt-1">{file.type}</p> */}
                     <div className="mt-4 flex justify-between items-center">
-                        {/* <span className="text-sm text-gray-500">
-                            {new Date(file._creationTime).toLocaleDateString()}
-                        </span> */}
                         <Button
                             colorScheme="red"
                             size="sm"
-                            onClick={() => {
-                                onOpen(); // Open the confirmation modal
-                            }}
+                            onClick={onOpen} // Open the confirmation modal
                             isLoading={isLoading}
                         >
                             Delete
