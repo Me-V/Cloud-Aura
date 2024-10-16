@@ -43,6 +43,10 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
             position: "bottom-right"
         });
     };
+    
+    const openOtherFileModal = () => {
+        window.open(getFileUrl ?? '', "_blank");
+    };
 
     return (
         <>
@@ -123,7 +127,6 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                             objectFit="cover"
                             alt={file.name} 
                             className="rounded-t-lg cursor-pointer"
-                            onClick={openImageModal} // Open image modal when clicked
                         />
                     )}
                     {file.type === "text/csv" && (
@@ -138,7 +141,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                 </div>
                 <div className="p-4">
                     <h2 className="font-bold text-xl truncate">{file.name}</h2>
-                    <div className="mt-4 flex justify-between items-center">
+                    <div className="mt-4 flex gap-3 items-center">
                         <Button
                             colorScheme="red"
                             size="sm"
@@ -146,6 +149,13 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                             isLoading={isLoading}
                         >
                             Delete
+                        </Button>
+                        <Button
+                            colorScheme="blue"
+                            size="sm"
+                            onClick={file.type === "image/jpeg" ? openImageModal : openOtherFileModal}
+                        >
+                            View
                         </Button>
                     </div>
                 </div>
