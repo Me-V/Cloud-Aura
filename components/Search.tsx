@@ -5,17 +5,9 @@ import {
     Input,
     FormControl,
 } from "@chakra-ui/react";
-import { useOrganization, useUser } from '@clerk/nextjs';
 import { SearchIcon } from 'lucide-react';
 
 const Search = ({ query, setSearchQuery }: { query: string, setSearchQuery: Dispatch<SetStateAction<string>> }) => {
-    const user = useUser();
-    const organization = useOrganization();
-    let orgId: string | undefined = undefined;
-
-    if (organization.isLoaded && user.isLoaded) {
-        orgId = organization.organization?.id ?? user.user?.id;
-    }
 
     
     const [fileName, setFileName] = useState('');   
