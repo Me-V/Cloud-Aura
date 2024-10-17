@@ -7,7 +7,8 @@ import {
   IconButton,
   Button,
   Box,
-  Flex
+  Flex,
+  Link
 } from '@chakra-ui/react';
 import { HiDotsVertical } from 'react-icons/hi';
 
@@ -31,7 +32,7 @@ const Header = () => {
           <MenuList>
             <MenuItem>All Files</MenuItem>
             <MenuItem>Trash</MenuItem>
-            <MenuItem>Favourites</MenuItem>
+            <MenuItem><Link href="/favourites">Favourites</Link></MenuItem>
             <MenuItem><SignOutButton>
               <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>
             </SignOutButton></MenuItem>

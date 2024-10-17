@@ -15,7 +15,6 @@ import {
     CircularProgress,
     CircularProgressLabel,
     Flex,
-    Tooltip,
 } from "@chakra-ui/react";
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
@@ -136,7 +135,6 @@ const UploadButton = () => {
 
     return (
         <>
-            <Tooltip label="Upload" placement="top">
                 <Button
                     onClick={onOpen}
                     position="fixed"
@@ -158,7 +156,6 @@ const UploadButton = () => {
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                 </Button>
-            </Tooltip>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

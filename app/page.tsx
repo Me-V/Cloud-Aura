@@ -8,17 +8,19 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Landing from "@/components/Landing";
 import Loader from "@/components/Loader";
+import { useState } from "react";
+import Search from "@/components/Search";
 
 export default function Home() {
   const user = useUser();
   const organization = useOrganization();
   let orgId: string | undefined = undefined;
-  
+  const [searchQuery, setSearchQuery] = useState('');
   if (organization.isLoaded && user.isLoaded) {
     orgId = organization.organization?.id ?? user.user?.id;
   }
   
-  const allFiles = useQuery(api.files.getFiles, orgId ? { orgId } : "skip");
+  const allFiles = useQuery(api.files.getFiles, orgId ? { orgId, query: searchQuery } : "skip");
   
   if (!user.isLoaded) {
     return <Loader />;
@@ -45,6 +47,7 @@ export default function Home() {
           <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">Your Files
           </h1>
           <UploadButton />
+          <div className="w-[150px] sm:w-[150px] md:w-[350px] flex justify-end gap-4"><Search query={searchQuery} setSearchQuery={setSearchQuery} /></div>
         </div>
         
         {allFiles && allFiles.length > 0 && (

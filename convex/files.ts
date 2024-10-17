@@ -1,61 +1,74 @@
 import { ConvexError, v } from "convex/values"
-import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server"
-// import { Organization } from "@clerk/nextjs/server";
+import { mutation, MutationCtx, query, QueryCtx } from "./_generated/server"
 import { getUser } from "./users";
 import { Id } from "./_generated/dataModel";
 
 export const generateUploadUrl = mutation(async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if(!identity) throw new ConvexError("U r Not Logged IN");
+    if (!identity) throw new ConvexError("U r Not Logged IN");
 
 
     return await ctx.storage.generateUploadUrl();
 })
 
-export async function hasAccessToOrg( ctx: QueryCtx | MutationCtx, orgId: string ) {
-    
+export async function hasAccessToOrg(ctx: QueryCtx | MutationCtx, orgId: string) {
+
     // If for some reason this stops working then shift the identity to the function themselves downthere
-    const indentity = await ctx.auth.getUserIdentity(); 
-    if(!indentity) throw new ConvexError("U r Not Logged IN"); 
-    
+    const indentity = await ctx.auth.getUserIdentity();
+    if (!indentity) throw new ConvexError("U r Not Logged IN");
+
     const user = await getUser(ctx, indentity.tokenIdentifier);
     const cond = user.orgIds.includes(orgId) || user.tokenIdentifier.includes(orgId);
 
-    if(!cond) throw new ConvexError("U dont have the access -  VASU");
-    
+    if (!cond) throw new ConvexError("U dont have the access -  VASU");
+
     return cond;
 }
 
 export const createFile = mutation({
-    args:{
+    args: {
         name: v.string(),
-        orgId: v.string(),  
+        orgId: v.string(),
         type: v.union(v.literal("image/jpeg"), v.literal("application/pdf"), v.literal("text/csv")),
         fileId: v.id('_storage'),
     },
-    async handler(ctx, args){ 
-        
-        const hasAccess = await hasAccessToOrg(ctx, args.orgId)
-        if(!hasAccess) throw new ConvexError("U dont have the access -  VASU");     
+    async handler(ctx, args) {
 
-        await ctx.db.insert("files",{
-            name: args.name, 
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId)
+        if (!hasAccess) throw new ConvexError("U dont have the access -  VASU");
+
+        await ctx.db.insert("files", {
+            name: args.name,
             type: args.type,
             orgId: args.orgId,
             fileId: args.fileId,
         })
-    }    
+    }
 })
 
 export const getFiles = query({
-    args:{ orgId: v.string()}, // we ll be rendering the files of the organization that we passed from the front end ( only )...
-    async handler (ctx, args){
-       
-       const hasAccess = await hasAccessToOrg(ctx, args.orgId)
-       if(!hasAccess) return [];   
+    args: {
+        orgId: v.string(),
+        query: v.optional(v.string())
+    }, // we ll be rendering the files of the organization that we passed from the front end ( only )...
+    async handler(ctx, args) {
 
-       return ctx.db.query("files").withIndex("by_orgId", (q)=> q.eq("orgId", args.orgId))
-       .collect();
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId)
+        if (!hasAccess) return [];
+
+        const file = ctx.db.query("files").withIndex("by_orgId", (q) => q.eq("orgId", args.orgId))
+            .collect();
+
+        if (args.query === "" || args.query === null || args.query === undefined) {
+            return file;
+        }
+
+        else{
+            const filteredFiles = (await file).filter((file) =>
+                file.name.toLowerCase().includes(args.query!.toLowerCase()) //( '!' )keep this operator in mind this tells TypeScript that the query will definitely not null or undefined
+            );
+            return filteredFiles;
+        }
     }
 })
 
@@ -74,18 +87,18 @@ export const deleteFile = mutation({
         if (existingFile.orgId !== args.orgId) {
             throw new ConvexError("File doesn't belong to the specified organization");
         }
-        
+
         return await ctx.db.delete(args.id);
     }
 });
- 
+
 export const list = query({
-    args: {fileId: v.id("_storage")},
+    args: { fileId: v.id("_storage") },
     handler: async (ctx, args) => {
-      
+
         // a query to find the file with the given fileId
-        const file = await ctx.db.query("files").withIndex("by_fileId", (q)=> q.eq("fileId", args.fileId )).first();
-        if(!file) throw new ConvexError("File not found");
+        const file = await ctx.db.query("files").withIndex("by_fileId", (q) => q.eq("fileId", args.fileId)).first();
+        if (!file) throw new ConvexError("File not found");
 
         return await ctx.storage.getUrl(file?.fileId as Id<"_storage">);
     },
