@@ -10,6 +10,7 @@ import Landing from "@/components/Landing";
 import Loader from "@/components/Loader";
 import { useState } from "react";
 import Search from "@/components/Search";
+import Link from "next/link";
 
 export default function Home() {
   const user = useUser();
@@ -44,7 +45,10 @@ export default function Home() {
       
       <main className="flex flex-col px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-10 max-w-full overflow-x-hidden">
         <div className="flex flex-row sm:flex-row justify-between items-center pb-5 gap-4">
-          <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">Your Files
+          <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">
+            <Link href="" onClick={() => {
+              setSearchQuery('');
+            }}>Your Files</Link>
           </h1>
           <UploadButton />
           <div className="w-[150px] sm:w-[150px] md:w-[350px] flex justify-end gap-4"><Search query={searchQuery} setSearchQuery={setSearchQuery} /></div>
