@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 
 
-const favourites = () => {
+const Favourites = () => {
 
   const user = useUser();
   const organization = useOrganization();
@@ -57,4 +57,4 @@ const favourites = () => {
   )
 }
 
-export default favourites
+export default Favourites
