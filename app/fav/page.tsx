@@ -44,7 +44,7 @@ const favourites = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {starredFiles.length > 0 ? (
           starredFiles.map((file) => (
-           <div className='pb-10 px-4'> <Filecard key={file._id} file={file} /></div>
+           <div className='pb-10 px-4' key={file._id}> <Filecard file={file} /></div>
           ))
         ) : (
           <div className="flex flex-col justify-center w-[100vw] items-center h-[50vh] sm:h-[90vh] md:h-[70vh]">
