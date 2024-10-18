@@ -43,11 +43,15 @@ const UploadButton = () => {
     const generateUploadUrl = useMutation(api.files.generateUploadUrl);
     const [isFormValid, setIsFormValid] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [isUploading, setIsUploading] = useState(false);
 
     const onOpen = () => setIsOpen(true);
     const onClose = () => {
         setIsOpen(false);
         setFileName('');
+        setUploadProgress(0);
+        setIsLoading(false);
+        setIsUploading(false);
         setError(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -79,6 +83,8 @@ const UploadButton = () => {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", postUrl);
         xhr.setRequestHeader("Content-Type", fileInputRef.current!.files![0].type);
+
+        setIsUploading(true);
 
         xhr.upload.onprogress = (event) => {
             if (event.lengthComputable) {
@@ -189,6 +195,11 @@ const UploadButton = () => {
                                     validateForm();
                                 }}
                                 placeholder="Enter file name"
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSubmit();
+                                    }
+                                }}  
                             />
                         </FormControl>
                         {error && (
@@ -211,14 +222,14 @@ const UploadButton = () => {
                                 >
                                     Submit
                                 </Button>
-                                </Flex>
-                                {uploadProgress > 0 && uploadProgress < 100 && (
+                                {isUploading && uploadProgress > 0 && uploadProgress < 100 && (
                                 <CircularProgress value={uploadProgress} color="blue.400" size="50px" thickness="4px">
                                     <CircularProgressLabel fontSize="xs">{`${Math.round(uploadProgress)}%`}</CircularProgressLabel>
                                 </CircularProgress>
                             
                         )}
                         <Button variant="ghost" onClick={onClose}>Cancel</Button>
+                    </Flex>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
