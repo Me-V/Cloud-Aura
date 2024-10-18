@@ -8,9 +8,9 @@ import {
   Button,
   Box,
   Flex,
-  Link
 } from '@chakra-ui/react';
 import { HiDotsVertical } from 'react-icons/hi';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -30,9 +30,9 @@ const Header = () => {
             style={{ cursor: 'pointer' }}
           />
           <MenuList>
-            <MenuItem>All Files</MenuItem>
+            <MenuItem><Link href="/">All Files</Link></MenuItem>
             <MenuItem>Trash</MenuItem>
-            <MenuItem><Link href="/favourites">Favourites</Link></MenuItem>
+            <MenuItem><Link href="/fav">Favourites</Link></MenuItem>
             <MenuItem><SignOutButton>
               <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>
             </SignOutButton></MenuItem>

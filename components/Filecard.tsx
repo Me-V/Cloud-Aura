@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import Image from 'next/image';
+import { StarIcon, StarOffIcon } from "lucide-react";
 
 
 export default function Filecard({ file }: { file: Doc<"files"> }) {
@@ -26,6 +27,8 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
     const getFileUrl = useQuery(api.files.list, { fileId: file.fileId as Id<"_storage"> });
     let orgId: string | undefined = undefined;
     const toast = useToast();
+    const starFile = useMutation(api.files.starFile);
+    const unstarFile = useMutation(api.files.unstarFile);
     const [isLoading, setIsLoading] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isImageModalOpen, onOpen: openImageModal, onClose: closeImageModal } = useDisclosure();
@@ -46,6 +49,14 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
     
     const openOtherFileModal = () => {
         window.open(getFileUrl ?? '', "_blank");
+    };
+
+    const onFav = () => {
+        starFile({ fileId: file._id, orgId: orgId as string });
+    };
+
+    const onRemoveFav = () => {
+        unstarFile({ fileId: file._id, orgId: orgId as string });
     };
 
     return (
@@ -157,6 +168,27 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                         >
                             View
                         </Button>
+                        {/* <button onClick={onFav}>
+                            {file.isStarred ? <MoonStarIcon className="w-6 h-6" /> : <StarIcon className="w-6 h-6" />}  
+                        </button> */}
+
+                        {file.isStarred ? (
+                            <Button
+                                colorScheme="transparent"
+                                size="sm"
+                                onClick={onRemoveFav}
+                            >
+                                <StarOffIcon className="w-6 h-6 text-black" />
+                            </Button>
+                        ): (
+                            <Button
+                                colorScheme="transparent"
+                                size="sm"
+                                onClick={onFav}
+                            >
+                                <StarIcon className="w-6 h-6 text-black" />
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

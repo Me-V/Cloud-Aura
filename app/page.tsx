@@ -51,7 +51,7 @@ export default function Home() {
             }}>Your Files</Link>
           </h1>
           <UploadButton />
-          <div className="w-[150px] sm:w-[150px] md:w-[350px] flex justify-end gap-4"><Search query={searchQuery} setSearchQuery={setSearchQuery} /></div>
+          <div className="w-[120px] sm:w-[100px] md:w-[250px] flex justify-end gap-4"><Search query={searchQuery} setSearchQuery={setSearchQuery} /></div>
         </div>
         
         {allFiles && allFiles.length > 0 && (
@@ -63,7 +63,7 @@ export default function Home() {
         )}
 
         {allFiles && allFiles.length === 0 && (
-          <div className="flex flex-col justify-center items-center h-[50vh] sm:h-[60vh] md:h-[70vh]">
+          <div className="flex flex-col justify-center items-center h-[50vh] sm:h-[90vh] md:h-[90vh]">
             <Image src="/noFiles.svg" alt="No files" width={300} height={300} className="w-full max-w-[200px] sm:max-w-[300px] md:max-w-[400px]" />
             <p className="text-white text-lg sm:text-xl md:text-2xl font-bold text-center mt-6 sm:mt-8 md:mt-10">No files found</p>
           </div>

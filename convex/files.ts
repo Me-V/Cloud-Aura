@@ -42,6 +42,7 @@ export const createFile = mutation({
             type: args.type,
             orgId: args.orgId,
             fileId: args.fileId,
+            isStarred: false,
         })
     }
 })
@@ -103,3 +104,60 @@ export const list = query({
         return await ctx.storage.getUrl(file?.fileId as Id<"_storage">);
     },
 });
+
+export const starFile = mutation({
+    args: {
+        fileId: v.id("files"),
+        orgId: v.string(),
+    },
+    async handler(ctx, args) {
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
+        if (!hasAccess) throw new ConvexError("You don't have access to star this file");
+
+        const existingFile = await ctx.db.get(args.fileId);
+        if (!existingFile) throw new ConvexError("File not found");
+
+        if (existingFile.orgId !== args.orgId) {
+            throw new ConvexError("File doesn't belong to the specified organization");
+        }
+
+        await ctx.db.patch(args.fileId, {
+            isStarred: true,
+        }); 
+    }
+}); 
+
+export const unstarFile = mutation({
+    args: {
+        fileId: v.id("files"),
+        orgId: v.string(),
+    },
+    async handler(ctx, args) {
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
+        if (!hasAccess) throw new ConvexError("You don't have access to unstar this file");
+
+        const existingFile = await ctx.db.get(args.fileId);
+        if (!existingFile) throw new ConvexError("File not found");
+
+        if (existingFile.orgId !== args.orgId) {
+            throw new ConvexError("File doesn't belong to the specified organization");
+        }
+
+        await ctx.db.patch(args.fileId, {
+            isStarred: false,
+        });      
+    }
+}); 
+
+export const getStarredFiles = query({
+    args: {
+        orgId: v.string(),
+    },
+    async handler(ctx, args) {
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
+        if (!hasAccess) throw new ConvexError("You don't have access to get starred files");
+
+        const files = await ctx.db.query("files").withIndex("by_orgId", (q) => q.eq("orgId", args.orgId)).collect();
+        return files.filter((file) => file.isStarred);
+    }
+}); 

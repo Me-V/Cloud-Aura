@@ -9,6 +9,7 @@ export default defineSchema({
     type: v.string(),
     orgId: v.optional(v.string()), 
     fileId: v.id('_storage'),
+    isStarred: v.boolean(),
   }).index("by_orgId",["orgId"]).index("by_fileId", ["fileId"]),
  
   users: defineTable({ 
