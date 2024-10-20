@@ -53,10 +53,24 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
 
     const onFav = () => {
         starFile({ fileId: file._id, orgId: orgId as string });
+        toast({
+            title: "File starred successfully",
+            status: "success",
+            duration: 1500,
+            isClosable: true,
+            position: "bottom-right"
+        });
     };
 
     const onRemoveFav = () => {
         unstarFile({ fileId: file._id, orgId: orgId as string });
+        toast({
+            title: "File unstarred successfully",
+            status: "success",
+            duration: 1500,
+            isClosable: true,
+            position: "bottom-right"
+        });
     };
 
     return (
