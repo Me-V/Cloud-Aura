@@ -154,7 +154,7 @@ export const getStarredFiles = query({
         if (!hasAccess) throw new ConvexError("You don't have access to get starred files");
 
         const files = await ctx.db.query("files").withIndex("by_orgId", (q) => q.eq("orgId", args.orgId)).collect();
-        return files.filter((file) => file.isStarred);
+        return files.filter((file) => file.isStarred).filter((file) => !file.isDeleted);
     }
 });
 

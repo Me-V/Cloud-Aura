@@ -11,6 +11,7 @@ import Loader from "@/components/Loader";
 import { useState } from "react";
 import Search from "@/components/Search";
 import Link from "next/link";
+import { Doc } from "@/convex/_generated/dataModel";
 
 export default function Home() {
   const user = useUser();
@@ -39,7 +40,7 @@ export default function Home() {
     return <Loader />;
   }
   
-  function reduceFileCount(files: any[]) {
+  function reduceFileCount(files: Doc<"files">[]) {
     return files.filter((file) => !file.isDeleted).length;
   }
   
