@@ -38,16 +38,6 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
         orgId = organization.organization?.id ?? user.user?.id;
     }
 
-    const letsToast = () => {
-        toast({
-            title: "File deleted successfully",
-            status: "error",
-            duration: 2000,
-            isClosable: true,
-            position: "bottom-right"
-        });
-    };
-
     const openOtherFileModal = () => {
         window.open(getFileUrl ?? '', "_blank");
     };
@@ -119,7 +109,6 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                                 if (!orgId) return;
                                 onDel();
                                 setIsLoading(false);
-                                letsToast();
                             }}
                         >
                             Delete

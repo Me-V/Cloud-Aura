@@ -32,7 +32,7 @@ const Favourites = () => {
     <div className='min-h-screen bg-black'>
       <div className="sticky top-0 z-50 h-16 bg-black shadow-md"><Header /></div>
       <div className="h-[100px] flex flex-col sm:flex-row justify-between items-center pb-5 gap-4 px-4">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">
+        <h1 className="text-4xl pt-4 sm:pl-11 sm:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">
           
           Starred Files
         </h1>
