@@ -31,7 +31,7 @@ const Header = () => {
           />
           <MenuList>
             <MenuItem><Link href="/">All Files</Link></MenuItem>
-            <MenuItem>Trash</MenuItem>
+            <MenuItem><Link href="/del">Trash</Link></MenuItem>
             <MenuItem><Link href="/fav">Favourites</Link></MenuItem>
             <MenuItem><SignOutButton>
               <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>

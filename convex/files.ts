@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values"
-import { mutation, MutationCtx, query, QueryCtx } from "./_generated/server"
+import { internalMutation, mutation, MutationCtx, query, QueryCtx } from "./_generated/server"
 import { getUser } from "./users";
 import { Id } from "./_generated/dataModel";
 
@@ -50,7 +50,8 @@ export const createFile = mutation({
 export const getFiles = query({
     args: {
         orgId: v.string(),
-        query: v.optional(v.string())
+        query: v.optional(v.string()),
+        toBeDeleted: v.optional(v.boolean())
     }, // we ll be rendering the files of the organization that we passed from the front end ( only )...
     async handler(ctx, args) {
 
@@ -64,32 +65,27 @@ export const getFiles = query({
             return file;
         }
 
-        else{
+
+
+        else {
             const filteredFiles = (await file).filter((file) =>
-                file.name.toLowerCase().includes(args.query!.toLowerCase()) //( '!' )keep this operator in mind this tells TypeScript that the query will definitely not null or undefined
-            );
-            return filteredFiles;
+                file.name.toLowerCase().includes(args.query!.toLowerCase())) //( '!' )keep this operator in mind this tells TypeScript that the query will definitely not null or undefined
+
+            return filteredFiles
         }
     }
 })
 
-export const deleteFile = mutation({
-    args: {
-        id: v.id("files"),
-        orgId: v.string(),
-    },
-    async handler(ctx, args) {
-        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
-        if (!hasAccess) throw new ConvexError("You don't have access to delete this file");
+export const deleteFile = internalMutation({
+    args: {},
+    async handler(ctx) {
 
-        const existingFile = await ctx.db.get(args.id);
-        if (!existingFile) throw new ConvexError("File not found");
+        const files = await ctx.db.query("files").filter((q) => q.eq(q.field("isDeleted"), true)).collect();
 
-        if (existingFile.orgId !== args.orgId) {
-            throw new ConvexError("File doesn't belong to the specified organization");
-        }
-
-        return await ctx.db.delete(args.id);
+        await Promise.all(files.map(async (file) => {
+            await ctx.storage.delete(file.fileId as Id<"_storage">);
+            return ctx.db.delete(file._id);
+        }));
     }
 });
 
@@ -123,9 +119,9 @@ export const starFile = mutation({
 
         await ctx.db.patch(args.fileId, {
             isStarred: true,
-        }); 
+        });
     }
-}); 
+});
 
 export const unstarFile = mutation({
     args: {
@@ -145,9 +141,9 @@ export const unstarFile = mutation({
 
         await ctx.db.patch(args.fileId, {
             isStarred: false,
-        });      
+        });
     }
-}); 
+});
 
 export const getStarredFiles = query({
     args: {
@@ -160,4 +156,63 @@ export const getStarredFiles = query({
         const files = await ctx.db.query("files").withIndex("by_orgId", (q) => q.eq("orgId", args.orgId)).collect();
         return files.filter((file) => file.isStarred);
     }
-}); 
+});
+
+export const deleteCron = mutation({
+    args: {
+        fileId: v.id("files"),
+        orgId: v.string(),
+        isDeleted: v.optional(v.boolean())
+    },
+    async handler(ctx, args) {
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
+        if (!hasAccess) throw new ConvexError("You don't have access to unstar this file");
+
+        const existingFile = await ctx.db.get(args.fileId);
+        if (!existingFile) throw new ConvexError("File not found");
+
+        if (existingFile.orgId !== args.orgId) {
+            throw new ConvexError("File doesn't belong to the specified organization");
+        }
+
+        await ctx.db.patch(args.fileId, {
+            isDeleted: true,
+        });
+    }
+});
+
+export const notDeleteCron = mutation({
+    args: {
+        fileId: v.id("files"),
+        orgId: v.string(),
+        isDeleted: v.optional(v.boolean())
+    },
+    async handler(ctx, args) {
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
+        if (!hasAccess) throw new ConvexError("You don't have access to unstar this file");
+
+        const existingFile = await ctx.db.get(args.fileId);
+        if (!existingFile) throw new ConvexError("File not found");
+
+        if (existingFile.orgId !== args.orgId) {
+            throw new ConvexError("File doesn't belong to the specified organization");
+        }
+
+        await ctx.db.patch(args.fileId, {
+            isDeleted: false,
+        });
+    }
+});
+
+export const getDeletedFiles = query({
+    args: {
+        orgId: v.string(),
+    },
+    async handler(ctx, args) {
+        const hasAccess = await hasAccessToOrg(ctx, args.orgId);
+        if (!hasAccess) throw new ConvexError("You don't have access to get starred files");
+
+        const files = await ctx.db.query("files").withIndex("by_orgId", (q) => q.eq("orgId", args.orgId)).collect();
+        return files.filter((file) => file.isDeleted);
+    }
+});
