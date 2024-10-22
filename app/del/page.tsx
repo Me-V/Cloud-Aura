@@ -36,7 +36,7 @@ const Del = () => {
           
           Files To Be Deleted
         </h1>
-        <span className='text-gray-500 text-sm sm:text-base md:text-lg font-medium pt-2 pl-2'>The file marked for deletion'll be deleted after -- time</span>
+        <span className='text-gray-500 text-sm sm:text-base md:text-lg font-medium pt-2 pl-2'>The file marked for deletion will be deleted after -- time</span>
       </div>
 
 
