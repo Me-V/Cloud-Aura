@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useToast } from '@chakra-ui/react'
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import Image from 'next/image';
-import { StarIcon, StarOffIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 
 
 export default function Filecard({ file }: { file: Doc<"files"> }) {
