@@ -62,12 +62,12 @@ export default function Home() {
 
       <main className="flex flex-col px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-10 max-w-full overflow-x-hidden">
         <div className="flex flex-row sm:flex-row justify-between items-center pb-5 gap-4">
-          <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">
+          <h1 className="text-3xl h-10 sm:h-20 sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-normal bg-gradient-to-br from-blue-500 via-green-400 to-yellow-300 bg-clip-text text-transparent text-center sm:text-left">
             <Link href="" onClick={() => {
               setSearchQuery('');
               setIsImagesOnly(false);
               setIsFilesOnly(false);
-            }}>Your Files</Link>
+            }} className="text-[1.5rem] sm:text-[3rem]">{isImagesOnly ? "Images Only" : isFilesOnly ? "Files Only" : "Your Files"}</Link>
           </h1>
           <UploadButton />
           <div className="w-[120px] sm:w-[100px] md:w-[250px] flex justify-end gap-2 sm:gap-4"><Search query={searchQuery} setSearchQuery={setSearchQuery} />

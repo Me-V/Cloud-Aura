@@ -213,7 +213,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
                                 size="sm"
                                 onClick={onRemoveFav}
                             >
-                                <StarOffIcon className="w-6 h-6 text-black" />
+                                <StarIcon className="w-6 h-6 text-green-700 fill-current" />
                             </Button>
                         ) : !file.isDeleted && (
                             <Button
