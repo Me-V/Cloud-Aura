@@ -105,7 +105,7 @@ export default function Home() {
 
         {isImagesOnly && !isFilesOnly && allFiles && allFiles.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-            {allFiles.filter((file) => !file.isDeleted && file.type === "image/jpeg").map((file) => (
+            {allFiles.filter((file) => !file.isDeleted && (file.type === "image/jpeg" || file.type === "image/png")).map((file) => (
               <Filecard key={file._id} file={file} />
             ))}
           </div>
@@ -114,7 +114,7 @@ export default function Home() {
 
         {isFilesOnly && !isImagesOnly && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-            {allFiles.filter((file) => !file.isDeleted && file.type === "application/pdf").map((file) => (
+            {allFiles.filter((file) => !file.isDeleted && (file.type === "application/pdf" || file.type === "application/x-compressed" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")).map((file) => (
               <Filecard key={file._id} file={file} />
             ))}
           </div>

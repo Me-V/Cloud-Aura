@@ -29,7 +29,7 @@ export const createFile = mutation({
     args: {
         name: v.string(),
         orgId: v.string(),
-        type: v.union(v.literal("image/jpeg"), v.literal("application/pdf"), v.literal("text/csv")),
+        type: v.union(v.literal("image/jpeg"), v.literal("application/x-compressed") , v.literal("image/png"), v.literal("application/pdf"), v.literal("text/csv"), v.literal("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")),
         fileId: v.id('_storage'),
     },
     async handler(ctx, args) {

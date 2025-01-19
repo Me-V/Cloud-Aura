@@ -1,7 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-export type FileType = "image/jpeg" | "application/pdf" | "text/csv";
+export type FileType = "image/jpeg" | "image/png" | "application/pdf" | "text/csv" | "application/x-compressed" | "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 export default defineSchema({
   files: defineTable({ 
