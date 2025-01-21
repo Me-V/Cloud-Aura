@@ -269,7 +269,7 @@ export const getStorageInfo = query({
       throw new ConvexError("You don't have access to get starred files");
 
     // Fetch storage information from the _storage system table
-    const storageItems = await ctx.db.query("files").collect();
+    const storageItems = await ctx.db.query("files").withIndex("by_orgId", (q) => q.eq("orgId", args.orgId)).collect();
 
     // Calculate total storage used
     const totalStorage = storageItems.reduce((acc, item) => acc + item.size, 0);
