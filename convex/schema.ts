@@ -10,11 +10,13 @@ export default defineSchema({
     orgId: v.optional(v.string()), 
     fileId: v.id('_storage'),
     isStarred: v.boolean(),
-    isDeleted: v.optional(v.boolean())
+    isDeleted: v.optional(v.boolean()),
+    size: v.number(),
   }).index("by_orgId",["orgId"]).index("by_fileId", ["fileId"]).index("by_isDeleted", ["isDeleted"]),
  
   users: defineTable({ 
     tokenIdentifier: v.string(), 
     orgIds: v.array(v.string()),
   }).index("by_tokenIdentifier", ['tokenIdentifier']),
+
 });

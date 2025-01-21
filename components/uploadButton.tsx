@@ -96,7 +96,7 @@ const UploadButton = () => {
         xhr.onload = async () => {
             if (xhr.status === 200) {
                 const { storageId } = JSON.parse(xhr.responseText);
-                await createFiles({ name: fileName, orgId, fileId: storageId, type: fileInputRef.current!.files![0].type as FileType });
+                await createFiles({ name: fileName, orgId, fileId: storageId, type: fileInputRef.current!.files![0].type as FileType, size: fileInputRef.current!.files![0].size });
                 onClose();
                 setIsLoading(false);
                 setFileName('');

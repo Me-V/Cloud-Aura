@@ -68,7 +68,8 @@ export default function Home() {
               setIsImagesOnly(false);
               setIsFilesOnly(false);
             }} className="text-[1.5rem] sm:text-[3rem]">{isImagesOnly ? "Images Only" : isFilesOnly ? "Files Only" : "Your Files"}</Link>
-          </h1>
+          </h1>       
+
           <UploadButton />
           <div className="w-[120px] sm:w-[100px] md:w-[250px] flex justify-end gap-2 sm:gap-4"><Search query={searchQuery} setSearchQuery={setSearchQuery} />
             <Box>

@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { HiDotsVertical } from 'react-icons/hi';
 import Link from 'next/link';
+import StorageUsage from './Storage';
 
 const Header = () => {
   return (
@@ -30,12 +31,14 @@ const Header = () => {
             style={{ cursor: 'pointer' }}
           />
           <MenuList>
-            <MenuItem><Link href="/">All Files</Link></MenuItem>
-            <MenuItem><Link href="/del">Trash</Link></MenuItem>
-            <MenuItem><Link href="/fav">Favourites</Link></MenuItem>
+            <MenuItem className='mt-2'><Link href="/">All Files</Link></MenuItem>
+            <MenuItem className='mt-2'><Link href="/del">Trash</Link></MenuItem>
+            <MenuItem className='mt-2'><Link href="/fav">Favourites</Link></MenuItem>
+            <MenuItem className='mt-8 mr-5'><StorageUsage/></MenuItem>
             <MenuItem><SignOutButton>
               <Button size="sm" colorScheme="red" variant="outline" mr={2}>Sign Out</Button>
             </SignOutButton></MenuItem>
+            
           </MenuList>
         </Menu>
       </Box>
