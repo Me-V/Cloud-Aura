@@ -266,7 +266,7 @@ export default function Filecard({ file }: { file: Doc<"files"> }) {
           )}
         </div>
         <div className="p-4">
-          <h2 className="font-bold text-xl truncate">{file.name}</h2>
+          <h2 className="font-bold text-xl truncate">{file.name} <span className="text-gray-500 text-xs pl-2">( {(file.size/1024/1024).toFixed(2)} MB )</span></h2>
           <div className="mt-4 flex gap-3 items-center">
             {file.isDeleted ? (
               <Button colorScheme="green" size="sm" onClick={onNotDel}>
